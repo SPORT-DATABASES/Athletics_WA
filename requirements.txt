@@ -1,0 +1,11 @@
+asyncio
+nest_asyncio
+pandas
+worldathletics
+polars
+fastparquet
+pyarrow
+aiohttp
+tqdm.asyncio
+tdqm
+aiofiles

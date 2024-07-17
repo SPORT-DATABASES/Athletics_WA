@@ -1,0 +1,35 @@
+name: Worldathletics Scraper
+
+on:
+  workflow_dispatch:  # Allows manual triggering of the workflow
+  schedule:
+    - cron: '0 1 * * 2'  # This will run the action every Monday at 1 AM (UTC)
+
+jobs:
+  scrape-and-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.12
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Run scraper script
+      run: python Worldathletics_all.py
+
+    - name: Commit competition_data.parquet
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add competition_results.parquet
+        git commit -m 'Update competition_results.parquet'
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
