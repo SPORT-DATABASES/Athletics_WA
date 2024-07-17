@@ -9,3 +9,4 @@ tdqm
 aiofiles
 sqlalchemy
 python-dotenv
+pymysql
