@@ -3,7 +3,7 @@ name: Worldathletics Scraper
 on:
   workflow_dispatch:  # Allows manual triggering of the workflow
   schedule:
-    - cron: '0 1 * * 2'  # This will run the action every Tuesday at 1 AM (UTC)
+    - cron: '0 5 * * *'  
 
 jobs:
   scrape-and-commit:
@@ -25,5 +25,3 @@ jobs:
       run: python insert_recent_data.py
       env:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-
-   
