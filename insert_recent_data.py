@@ -323,13 +323,15 @@ def delete_existing_records(start_date, engine):
     ''')
     try:
         with engine.connect() as connection:
-            result = connection.execute(delete_query, {"start_date": start_date})
-            deleted_rows = result.rowcount
-            print(f"Deleted {deleted_rows} records from {start_date} onward.")
-            return deleted_rows
+            with connection.begin() as transaction:  # Ensure the transaction is explicitly handled
+                result = connection.execute(delete_query, {"start_date": start_date})
+                deleted_rows = result.rowcount
+                print(f"Deleted {deleted_rows} records from {start_date} onward.")
+                return deleted_rows
     except SQLAlchemyError as e:
         print(f"Error occurred while deleting records: {e}")
         return 0
+
 
 # Delete records from the start date and get the number of rows deleted
 deleted_rows = delete_existing_records(start_date, engine)
@@ -376,10 +378,13 @@ def insert_in_batches(df, table_name, engine, batch_size):
     for start in range(0, total_rows, batch_size):
         end = start + batch_size
         batch = df[start:end]
-        batch.to_sql(name=table_name, con=engine, if_exists='append', index=False)
-        print(f"Inserted rows {start + 1} to {min(end, total_rows)}")
+        try:
+            batch.to_sql(name=table_name, con=engine, if_exists='append', index=False)
+            print(f"Inserted rows {start + 1} to {min(end, total_rows)}")
+        except SQLAlchemyError as e:
+            print(f"Error occurred while inserting rows {start + 1} to {min(end, total_rows)}: {e}")
 
-# Insert the data into the MySQL database in batches
+# Example usage
 try:
     batch_size = 1000  # Define the batch size
     insert_in_batches(pandas_df, 'WA_competition_results', engine, batch_size)
