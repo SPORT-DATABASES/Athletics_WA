@@ -5,7 +5,6 @@ polars
 fastparquet
 pyarrow
 aiohttp
-tqdm.asyncio
 tdqm
 aiofiles
 sqlalchemy
