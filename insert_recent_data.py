@@ -50,7 +50,7 @@ with engine.connect() as connection:
 print(f"The most recent date is: {most_recent_date}")
 
 # Assuming most_recent_date is already defined
-most_recent_date = datetime.strptime('2024-07-17', '%Y-%m-%d')  # Example date
+most_recent_date = datetime.strptime('2024-07-24', '%Y-%m-%d')  # Example date
 
 # Calculate the start date, 14 days before the most recent date
 start_date = (most_recent_date - timedelta(days=14)).strftime('%Y-%m-%d')
