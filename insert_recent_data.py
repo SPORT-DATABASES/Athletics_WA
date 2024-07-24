@@ -64,10 +64,10 @@ nest_asyncio.apply()
 logging.basicConfig(level=logging.WARNING, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Endpoint URL and headers
-url = "https://gt2rau4y6beytpdxktx26qss2a.appsync-api.eu-west-1.amazonaws.com/graphql"
+url = "https://graphql-prod-4609.prod.aws.worldathletics.org/graphql"
 headers = {
     "Content-Type": "application/json",
-    "x-api-key": "da2-344bv27kgnd6lpilqwwbxqz7bq"
+    "x-api-key": "da2-4enkl5vjkbczbfowagsi5l4qpy"
 }
 
 # Retry settings
