@@ -3,7 +3,7 @@ name: Worldathletics Scraper
 on:
   workflow_dispatch:  # Allows manual triggering of the workflow
   schedule:
-    - cron: '0 5 * * *'  
+    - cron: '0 5 * * *'  # Schedule to run at 5 AM UTC every day
 
 jobs:
   scrape-and-commit:
@@ -21,7 +21,27 @@ jobs:
     - name: Install dependencies
       run: pip install -r requirements.txt
 
-    - name: Put last 2 weeks data from WA into MySQL database
-      run: python insert_recent_data.py
+    - name: Install Edge
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget apt-transport-https
+        wget https://packages.microsoft.com/keys/microsoft.asc
+        sudo apt-key add microsoft.asc
+        sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge.list'
+        sudo apt-get update
+        sudo apt-get install -y microsoft-edge-stable
+        sudo apt-get install -y wget unzip xvfb
+
+    - name: Verify Edge Installation
+      run: microsoft-edge --version
+
+    - name: Run scrape script
+      env:
+        DISPLAY: ":99.0"
+      run: |
+        Xvfb :99 -ac &
+        sleep 3 # Give Xvfb some time to start
+        python insert_recent_data.py
       env:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+

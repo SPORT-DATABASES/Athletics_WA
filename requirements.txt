@@ -10,3 +10,5 @@ aiofiles
 sqlalchemy
 python-dotenv
 pymysql
+selenium
+webdriver-manager
