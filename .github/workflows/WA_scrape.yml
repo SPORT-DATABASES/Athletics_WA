@@ -38,10 +38,11 @@ jobs:
     - name: Run scrape script
       env:
         DISPLAY: ":99.0"
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       run: |
         Xvfb :99 -ac &
         sleep 3 # Give Xvfb some time to start
         python insert_recent_data.py
-      env:
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
+        
 
